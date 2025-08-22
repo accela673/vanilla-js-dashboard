@@ -1,0 +1,34 @@
+/* Сброс базовых отступов */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: #f0f0f0;
+  color: #333;
+  padding: 1rem;
+}
+
+/* Шапка */
+header {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Сетка */
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Карточки */
+.widget {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
