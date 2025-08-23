@@ -12,10 +12,22 @@
   </header>
 
   <main class="grid">
-    <div class="widget">Time</div>
-    <div class="widget">Tasks</div>
-    <div class="widget">Weather</div>
-    <div class="widget">Currency</div>
+    <div class="widget" id="clock">
+        Time
+        <div id="time">--:--:--</div>
+    </div>
+    <div class="widget" id="tasks">
+        Tasks
+        <div id="taskList">
+            <ul id="tasksUl">
+            </ul>
+            <input type="text" id="taskInput" placeholder="New task"> 
+            <button onclick="addTask()">Submit</button>
+        </div>
+    </div>
+    <div class="widget" id="weather">Weather</div>
+    <div class="widget" id="currency">Currency</div>
+    <script src="script.js"></script>
   </main>
 </body>
 </html>

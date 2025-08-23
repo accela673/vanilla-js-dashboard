@@ -22,6 +22,7 @@ header {
 .grid {
   display: grid;
   gap: 1rem;
+
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
@@ -30,5 +31,22 @@ header {
   background: white;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
+}
+
+
+
+#tasks button {
+  background-color: #f0f0f0; /* исходный цвет */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s; 
+  margin-left: 0.5rem;
+}
+
+#tasks button:hover {
+  background-color: #ff6961; /* цвет при наведении */
+  color: white; /* цвет текста при наведении */
 }
