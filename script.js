@@ -84,46 +84,49 @@ function loadTasks() {
 }
 
 async function fetchWeather() {
-  const apiKey = "YOUR_API_KEY"; // replace with your API key
+  const apiKey = "e6c1fbe4f79ad77dad7fa09737d002d5";
   const weatherDiv = document.getElementById("weatherInfo");
   weatherDiv.textContent = "Loading...";
 
-  if (!navigator.geolocation) {
-    weatherDiv.textContent = "Geolocation is not supported.";
-    return;
+  function loadWeather(lat, lon) {
+    const exclude = "minutely,alerts";
+    const units = "metric";
+    const lang = "en";
+
+    const url = `https://api.openweathermap.org/data/1.0/onecall?lat=${lat}&lon=${lon}&exclude=${exclude}&units=${units}&lang=${lang}&appid=${apiKey}`;
+
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        const temp = Math.round(data.current.temp);
+        const description = data.current.weather[0].description;
+        const icon = data.current.weather[0].icon;
+
+        weatherDiv.innerHTML = `
+          <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}">
+          ${temp}°C, ${description}
+        `;
+      })
+      .catch(err => {
+        weatherDiv.textContent = "Unable to load weather.";
+        console.error(err);
+      });
   }
 
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
-
-    const exclude = "minutely,alerts"; // optional
-    const units = "metric"; // Celsius
-    const lang = "en"; // language
-
-    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${exclude}&units=${units}&lang=${lang}&appid=${apiKey}`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const data = await response.json();
-
-      const temp = Math.round(data.current.temp);
-      const description = data.current.weather[0].description;
-      const icon = data.current.weather[0].icon;
-
-      weatherDiv.innerHTML = `
-        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}">
-        ${temp}°C, ${description}
-      `;
-    } catch (error) {
-      weatherDiv.textContent = "Unable to load weather.";
-      console.error("Weather error:", error);
-    }
-  }, (error) => {
-    weatherDiv.textContent = "Unable to get location.";
-    console.error("Geolocation error:", error);
-  });
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => loadWeather(pos.coords.latitude, pos.coords.longitude),
+      (err) => {
+        console.warn("Geolocation failed, using default location:", err);
+        loadWeather(42.8746, 74.5698); // Bishkek fallback
+      }
+    );
+  } else {
+    loadWeather(42.8746, 74.5698); // fallback
+  }
 }
 
 fetchWeather();
