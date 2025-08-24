@@ -84,33 +84,48 @@ function loadTasks() {
 }
 
 async function fetchWeather() {
-  const apiKey = "e6c1fbe4f79ad77dad7fa09737d002d5";
-  const city = "Bishkek,KG";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`;
-
+  const apiKey = "YOUR_API_KEY"; // replace with your API key
   const weatherDiv = document.getElementById("weatherInfo");
   weatherDiv.textContent = "Loading...";
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-    const data = await response.json();
-
-    const temp = Math.round(data.main.temp);
-    const description = data.weather[0].description;
-    const icon = data.weather[0].icon;
-
-    weatherDiv.innerHTML = `
-      <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}">
-      ${temp}°C, ${description}
-    `;
-  } catch (error) {
-    weatherDiv.textContent = "Не удалось загрузить погоду";
-    console.error("Ошибка погоды:", error);
+  if (!navigator.geolocation) {
+    weatherDiv.textContent = "Geolocation is not supported.";
+    return;
   }
+
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    const exclude = "minutely,alerts"; // optional
+    const units = "metric"; // Celsius
+    const lang = "en"; // language
+
+    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${exclude}&units=${units}&lang=${lang}&appid=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const data = await response.json();
+
+      const temp = Math.round(data.current.temp);
+      const description = data.current.weather[0].description;
+      const icon = data.current.weather[0].icon;
+
+      weatherDiv.innerHTML = `
+        <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}">
+        ${temp}°C, ${description}
+      `;
+    } catch (error) {
+      weatherDiv.textContent = "Unable to load weather.";
+      console.error("Weather error:", error);
+    }
+  }, (error) => {
+    weatherDiv.textContent = "Unable to get location.";
+    console.error("Geolocation error:", error);
+  });
 }
 
 fetchWeather();
 setInterval(fetchWeather, 10 * 60 * 1000);
-
 window.onload = loadTasks;
