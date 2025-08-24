@@ -83,4 +83,34 @@ function loadTasks() {
   });
 }
 
+async function fetchWeather() {
+  const apiKey = "e6c1fbe4f79ad77dad7fa09737d002d5";
+  const city = "Bishkek,KG";
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`;
+
+  const weatherDiv = document.getElementById("weatherInfo");
+  weatherDiv.textContent = "Loading...";
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    const data = await response.json();
+
+    const temp = Math.round(data.main.temp);
+    const description = data.weather[0].description;
+    const icon = data.weather[0].icon;
+
+    weatherDiv.innerHTML = `
+      <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${description}">
+      ${temp}°C, ${description}
+    `;
+  } catch (error) {
+    weatherDiv.textContent = "Не удалось загрузить погоду";
+    console.error("Ошибка погоды:", error);
+  }
+}
+
+fetchWeather();
+setInterval(fetchWeather, 10 * 60 * 1000);
+
 window.onload = loadTasks;
