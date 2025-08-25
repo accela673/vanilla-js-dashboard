@@ -141,6 +141,24 @@ async function loadCurrency() {
   }
 }
 
+const themeToggle = document.getElementById("themeToggle");
+
+// Проверяем сохранённую тему
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  // Сохраняем текущую тему
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+});
+
 loadCurrency();
 
 fetchWeather();
