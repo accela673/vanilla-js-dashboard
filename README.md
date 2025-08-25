@@ -33,28 +33,21 @@
 5. **Responsive Layout**
    - 📱 Mobile: single column (widgets stacked vertically).
    - 💻 Desktop: grid with 2–3 columns.
-   - Minimal media queries (e.g., `@media (max-width: 768px)`).
 
 ---
 
 ## 🛠 Tech Stack
-- **HTML5 + CSS3** (Grid/Flexbox, variables, media queries, animations).
+- **HTML5 + CSS3** (Grid/Flexbox, variables).
 - **Vanilla JS (ES6)**: DOM API, fetch, localStorage.
 - (Optional) **SCSS** for cleaner styling.
 
 ---
 
-## 🚀 Roadmap
 1. ✅ Basic layout (header + widget grid).
 2. ✅ Responsive layout (mobile-first).
 3. ✅ To-Do widget (JS + localStorage).
 4. ✅ Weather widget (API fetch).
 5. ✅ Currency rates widget (API fetch).
 6. ✅ Light/Dark theme switcher.
-7. ✅ Polishing (animations, icons, better styles).
 
----
 
-## 📷 Visual Style
-The dashboard will look like a simple iGoogle-style board:  
-a set of cards (widgets) that adapt to screen size.
